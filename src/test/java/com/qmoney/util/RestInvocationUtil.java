@@ -72,19 +72,17 @@ public class RestInvocationUtil {
     }
 
     @SuppressWarnings("unused")
-    public String getJsonArrayValue(String jsonContent, String arrayValue, String valueToRead) {
+    public String getJsonArrayValue(String jsonContent, String arrayValue, int index, String valueToRead) {
+
         String reponse = null;
         try {
             JsonParser parser = new JsonParser();
             JsonObject rootObj = parser.parse(jsonContent).getAsJsonObject();
             JsonArray records = rootObj.getAsJsonArray(arrayValue);
+            JsonElement element = records.get(index);
+            JsonObject weatherElement = element.getAsJsonObject();
+            reponse = weatherElement.get(valueToRead).getAsString();
 
-            for (JsonElement element : records) {
-
-                JsonObject weatherElement = element.getAsJsonObject();
-
-                reponse = weatherElement.get(valueToRead).getAsString();
-            }
         } catch (Exception exp) {
             System.out.print("Exception : " + exp);
             exp.printStackTrace();
